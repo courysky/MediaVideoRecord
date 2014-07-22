@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#111111"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    
+
+    <LinearLayout
+        android:id="@+id/layout_menus"
+        android:orientation="horizontal" 
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageButton
+            android:id="@+id/btn_VideoCancel"
+            android:background="@null"
+            android:src="@drawable/video_record_cancel_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="结束录像" />
+        <ImageButton
+            android:id="@+id/btn_VideoStart"
+            android:background="@null"
+            android:src="@drawable/selector_video_start_record_btn"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始录像" 
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"/>
+
+        <ImageButton
+            android:id="@+id/btn_VideoStop"
+            android:background="@null"
+            android:src="@drawable/video_record_done_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="结束录像" />
+    </LinearLayout>
+    <SurfaceView
+        android:id="@+id/sv_view"
+        android:layout_width="480dp"
+        android:layout_height="640dp" 
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/layout_menus"/>
+	<ProgressBar 
+	    android:id="@+id/progress_time"
+	    android:progress="0"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:focusable="false"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/sv_view"/>
+</RelativeLayout>
