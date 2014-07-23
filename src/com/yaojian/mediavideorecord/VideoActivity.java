@@ -165,13 +165,14 @@ public class VideoActivity extends Activity implements OnClickListener{
 			}
 			
 			if (camera != null) {
+				camera.stopPreview();
 				camera.release();
 				camera = null;
 			}
 			
 			isRecording=false;
 			btn_VideoStart.setEnabled(true);
-			btn_VideoStop.setEnabled(false);
+//			btn_VideoStop.setEnabled(false);
 			if (null != file && file.exists()) {
 				try {
 					ExifInterface exifInterface = new ExifInterface(file.getAbsolutePath());
@@ -253,6 +254,7 @@ public class VideoActivity extends Activity implements OnClickListener{
 				int percent = (int) (timeSpan * 100 / limitTime);
 				progressBar.setProgress(percent);
 				if (percent>=100) {
+					stop();
 					Toast.makeText(VideoActivity.this, "Record Over", Toast.LENGTH_SHORT).show();
 				} else {
 					mHandler.sendEmptyMessageDelayed(HANDLE_UPDATE_TIME_PROGRESS, 500);
