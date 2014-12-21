@@ -2,9 +2,12 @@ package com.yaojian.mediavideorecord;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import android.app.Activity;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
+import android.hardware.Camera.Size;
 import android.media.ExifInterface;
 import android.media.MediaRecorder;
 import android.media.MediaRecorder.OnErrorListener;
@@ -14,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -90,9 +94,17 @@ public class VideoActivity extends Activity implements OnClickListener{
 			}
 			mediaRecorder = new MediaRecorder();
 			
+			List<Size> sizeList = null;
 			{
 				camera = Camera.open();
 				if (camera != null) {
+					Parameters parameters = camera.getParameters();  
+					   
+					
+					sizeList =  parameters.getSupportedVideoSizes();
+					if (null == sizeList) {
+						sizeList = parameters.getSupportedPreviewSizes();
+					}
 					camera.setDisplayOrientation(90);
 					camera.unlock();
 					mediaRecorder.setCamera(camera);
@@ -103,19 +115,29 @@ public class VideoActivity extends Activity implements OnClickListener{
 			
 			mediaRecorder.reset();
 			mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-			mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+			mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);//CAMERA
 			
-			mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);//MPEG_4
+			mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);//MPEG_4//DEFAULT
 			mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 			/*
 			 * OutputFormat.DEFAULT
 			 * AudioEncoder DEFAULT AAC_ELD(phone ok) ACC(phone ok) HE_AAC(GALAXY not ok
 			 * VideoEncoder.MPEG_4_SP
 			 */
-			mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+			mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);//MPEG_4_SP
 
+			
+            // 获取自己手机合适的尺寸  
+//            List<Size> sizeList = parameters.getSupportedPreviewSizes();  
+			for (Size size : sizeList) {
+				Log.v(VideoActivity.class.getSimpleName(), "SupportedVideoSize :"+size.width+", "+size.height);
+				if (size.width<900) {
+					mediaRecorder.setVideoSize(size.width, size.height);
+					break;
+				}
+			}
 //			mediaRecorder.setVideoSize(640, 480);
-			mediaRecorder.setVideoSize(1280, 720);
+//			mediaRecorder.setVideoSize(1280, 720);
 			mediaRecorder.setMaxDuration(limitTime);// �������?
 			
 			// some device not available
@@ -139,7 +161,7 @@ public class VideoActivity extends Activity implements OnClickListener{
 					isRecording=false;
 					btn_VideoStart.setEnabled(true);
 					btn_VideoStop.setEnabled(false);
-					Toast.makeText(VideoActivity.this, "Record Error", 0).show();
+					Toast.makeText(VideoActivity.this, "Record Error", Toast.LENGTH_LONG).show();
 				}
 			});
 			mediaRecorder.prepare();
@@ -152,6 +174,7 @@ public class VideoActivity extends Activity implements OnClickListener{
 			Toast.makeText(VideoActivity.this, "Start Record", Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
 			e.printStackTrace();
+			// TODO [yaojian] release resource
 		}
 
 	}
@@ -216,6 +239,7 @@ public class VideoActivity extends Activity implements OnClickListener{
 			stop();
 			setResult(RESULT_OK);
 			finish();
+			Toast.makeText(VideoActivity.this, "Record Over, "+file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
 		}
 			break;
 		case R.id.btn_VideoCancel:{

@@ -19,15 +19,18 @@ public final class R {
         public static final int video_record_start_pressed=0x7f020005;
     }
     public static final class id {
-        public static final int btn_VideoCancel=0x7f060001;
-        public static final int btn_VideoStart=0x7f060002;
-        public static final int btn_VideoStop=0x7f060003;
-        public static final int layout_menus=0x7f060000;
-        public static final int progress_time=0x7f060005;
-        public static final int sv_view=0x7f060004;
+        public static final int btn_VideoCancel=0x7f060003;
+        public static final int btn_VideoStart=0x7f060004;
+        public static final int btn_VideoStop=0x7f060005;
+        public static final int btn_play=0x7f060001;
+        public static final int layout_menus=0x7f060002;
+        public static final int progress_time=0x7f060007;
+        public static final int sv_view=0x7f060006;
+        public static final int tlt_video_path=0x7f060000;
     }
     public static final class layout {
-        public static final int activity_video=0x7f030000;
+        public static final int activity_index=0x7f030000;
+        public static final int activity_video=0x7f030001;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
